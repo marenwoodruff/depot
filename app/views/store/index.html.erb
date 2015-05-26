@@ -4,13 +4,19 @@
 
 <h1>Your Pragmatic Catalog</h1>
 
-<% @products.each do |product| %>
-<div class="entry">
-	<%= image_tag(product.image_url) %>
-	<h3><%= product.title %></h3>
-	<!-- allows us to add html stylings to make the desrciptions more interesting for our customers -->
-	<%= sanitize(product.description) %>
-	<div class="price_line">
-		<span class="price"><%= product.price %></span>
-	</div>
-</div>
+<!-- bracketed the section.  IDed the components of the name for each entry/ overall cache entry = store; individual cache entry= entry; also associate a product with each -->
+<% cache ['store', Product.latest] do %>
+	<% @products.each do |product| %>
+		<% cache ['entry', product] do %>
+			<div class="entry">
+				<%= image_tag(product.image_url) %>
+				<h3><%= product.title %></h3>
+				<!-- allows us to add html stylings to make the desrciptions more interesting for our customers -->
+				<%= sanitize(product.description) %>
+				<div class="price_line">
+					<span class="price"><%= number_to_currency(product.price) %></span>
+				</div>
+			</div>
+		<% end %>
+	<% end %>
+<% end %>	
