@@ -18,7 +18,8 @@ class Product < ActiveRecord::Base
 
 	private
 
-		# ensure that there are no line items referencing this product
+		# hook method that ensures that there are no line items referencing this product
+		# hook method- method that Rails calls automatically at a given point in an object's life
 		def ensure_not_reference_by_any_line_item
 			if line_items.empty?
 				return true
